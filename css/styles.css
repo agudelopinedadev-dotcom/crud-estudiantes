@@ -1,0 +1,307 @@
+/* =========================================================
+   styles.css — CRUD Estudiantes
+   Estilo de menú de videojuego clásico de PS2:
+   fondo oscuro con líneas de TV, texto blanco con contorno negro,
+   barra naranja de selección y números verdes tipo HUD.
+   Responsivo y simétrico (todo centrado en una columna)
+   ========================================================= */
+
+/* Fuentes de Google Fonts (necesita internet) */
+@import url("https://fonts.googleapis.com/css2?family=Bowlby+One&family=Oswald:wght@400;500;700&display=swap");
+
+/* 1. VARIABLES: la paleta de colores */
+:root {
+  --naranja: #f2a22a;
+  --verde-dinero: #3f9d2e;
+  --rojo-vida: #c8161d;
+  --panel: rgba(0, 0, 0, 0.72);
+  --linea: rgba(255, 255, 255, 0.14);
+  --error: #ff5a4d;
+  --fuente-titulo: "Pricedown", "Bowlby One", Impact, "Arial Black", sans-serif;
+  --fuente-texto: "Oswald", "Arial Narrow", Arial, sans-serif;
+
+  /* Contorno negro alrededor de las letras (se ve en todo el juego) */
+  --contorno:
+    1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000,
+    0 2px 0 #000, 2px 2px 0 #000;
+}
+
+/* 2. RESET */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* 3. BODY: fondo oscuro, columna centrada */
+body {
+  margin: 0 auto;
+  max-width: 820px;
+  min-height: 100vh;
+  padding: clamp(16px, 4vw, 40px) clamp(12px, 3vw, 24px) 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+  background-color: #141210;
+  background-image: radial-gradient(
+    ellipse at 50% 0%,
+    #4a3418 0%,
+    #1c1610 45%,
+    #050505 100%
+  );
+  background-attachment: fixed;
+  color: #fff;
+  font-family: var(--fuente-texto);
+  font-size: 1rem;
+}
+
+/* 4. LÍNEAS DE TELEVISIÓN ANTIGUA (cubren toda la pantalla, no estorban al mouse) */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  pointer-events: none;
+  background-image: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.2) 0,
+    rgba(0, 0, 0, 0.2) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+}
+
+/* 5. ESQUINAS OSCURAS (viñeta) */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 99;
+  pointer-events: none;
+  background-image: radial-gradient(
+    ellipse at center,
+    transparent 55%,
+    rgba(0, 0, 0, 0.75) 100%
+  );
+}
+
+/* 6. FORMULARIO: panel negro con marco interior */
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  max-width: 520px;
+  padding: clamp(18px, 4vw, 30px);
+  background: var(--panel);
+  border: 3px solid #000;
+  border-top: 5px solid var(--naranja);
+  border-bottom: 5px solid var(--naranja);
+  outline: 1px solid rgba(255, 255, 255, 0.22);
+  outline-offset: -9px; /* marco fino por dentro del panel */
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+}
+
+label {
+  width: 100%;
+  max-width: 400px;
+  margin-top: 8px;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--naranja);
+  text-shadow: var(--contorno);
+}
+
+/* 7. CAMPOS DE TEXTO */
+input {
+  width: 100%;
+  max-width: 400px;
+  padding: 12px;
+  font-family: var(--fuente-texto);
+  font-size: 1rem;
+  font-weight: 500;
+  color: #fff;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.6);
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-radius: 0;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+input::placeholder {
+  color: #8a8a8a;
+}
+
+input:focus {
+  outline: none;
+  background: rgba(242, 162, 42, 0.22);
+  border-color: var(--naranja);
+}
+
+/* Mensajes de error: sale una ✖ solo cuando hay texto */
+small {
+  display: block;
+  min-height: 1.4em; /* reserva espacio para que nada "salte" */
+  color: var(--error);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-align: center;
+  text-shadow: var(--contorno);
+}
+
+small:not(:empty)::before {
+  content: "✖ ";
+}
+
+/* 8. BOTÓN PRINCIPAL: barra naranja que se desvanece en las puntas,
+      como la opción seleccionada de un menú */
+button {
+  width: 100%;
+  max-width: 400px;
+  margin-top: 12px;
+  padding: 14px 10px;
+  font-family: var(--fuente-titulo);
+  font-size: 1rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #fff;
+  text-shadow: var(--contorno);
+  background: linear-gradient(
+    90deg,
+    rgba(242, 162, 42, 0) 0%,
+    rgba(242, 162, 42, 0.95) 20%,
+    rgba(242, 162, 42, 0.95) 80%,
+    rgba(242, 162, 42, 0) 100%
+  );
+  border: 0;
+  border-radius: 0;
+  cursor: pointer;
+  transition: filter 0.15s, transform 0.1s;
+}
+
+button:hover {
+  filter: brightness(1.2);
+}
+
+button:active {
+  transform: scale(0.97);
+}
+
+button:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+/* 9. TABLA: panel negro con encabezado oscuro */
+table {
+  width: 100%;
+  max-width: 100%;
+  table-layout: fixed; /* columnas parejas */
+  border-collapse: collapse;
+  background: var(--panel);
+  border-top: 5px solid var(--naranja);
+  border-bottom: 5px solid var(--naranja);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+}
+
+th {
+  padding: 14px 4px;
+  font-family: var(--fuente-titulo);
+  font-weight: normal;
+  font-size: clamp(0.6rem, 2.2vw, 0.85rem);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--naranja);
+  text-shadow: var(--contorno);
+  background: rgba(0, 0, 0, 0.85);
+  border-bottom: 2px solid var(--naranja);
+}
+
+td {
+  padding: 10px 6px;
+  text-align: center;
+  font-weight: 500;
+  text-shadow: var(--contorno);
+  overflow-wrap: anywhere; /* correos largos no rompen el diseño */
+  border-bottom: 1px solid var(--linea);
+}
+
+tbody tr:nth-child(odd) td {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+tbody tr:hover td {
+  background: rgba(242, 162, 42, 0.22);
+}
+
+/* La edad en verde con contorno, como los números del dinero */
+td:nth-child(3) {
+  font-family: var(--fuente-titulo);
+  font-weight: normal;
+  font-size: 1rem;
+  color: var(--verde-dinero);
+  text-shadow: var(--contorno), 0 3px 0 #000;
+}
+
+/* Botones dentro de la tabla:
+   Editar = gris plateado (como la armadura), Eliminar = rojo (como la vida) */
+td button {
+  display: block;
+  width: 100%;
+  max-width: 110px;
+  margin: 5px auto;
+  padding: 7px 4px;
+  font-size: 0.65rem;
+  color: #000;
+  text-shadow: none;
+  background: linear-gradient(180deg, #e8e8e8, #9c9c9c);
+  border: 2px solid #000;
+  box-shadow: 0 3px 0 #000;
+}
+
+td button:last-child {
+  color: #fff;
+  text-shadow: var(--contorno);
+  background: linear-gradient(180deg, #e32a31, var(--rojo-vida));
+}
+
+td button:active {
+  transform: translateY(3px);
+  box-shadow: none;
+}
+
+/* 10. CELULARES */
+@media (max-width: 480px) {
+  body {
+    gap: 24px;
+  }
+
+  th {
+    padding: 10px 2px;
+  }
+
+  td {
+    padding: 8px 3px;
+    font-size: 0.85rem;
+  }
+
+  td button {
+    font-size: 0.55rem;
+    padding: 6px 2px;
+  }
+}
+
+/* 11. ACCESIBILIDAD: sin animaciones si el usuario lo prefiere */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+  }
+}
